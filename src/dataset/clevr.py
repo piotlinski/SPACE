@@ -5,6 +5,7 @@ from pathlib import Path
 import json
 import numpy as np
 import PIL
+import PIL.Image
 import torch
 from torch.utils import data
 
@@ -106,7 +107,5 @@ class CLEVR(torch.utils.data.Dataset):
     def __getitem__(self, item) -> Tuple[torch.Tensor, np.ndarray, int]:
         image_file = self.image_names[item]
         image_path = self.file_path.joinpath(self.image_dir).joinpath(image_file)
-        image = np.array(PIL.Image.open(image_path).convert("RGB").resize((128, 128), Image.BICUBIC)) / 255
-        boxes, labels = self._get_annotation(item)
-        mask = np.where(labels != -1)
-        return torch.from_numpy(image).float().permute(2, 0, 1), boxes, len(mask)
+        image = np.array(PIL.Image.open(image_path).convert("RGB").resize((128, 128), PIL.Image.BICUBIC)) / 255
+        return torch.from_numpy(image).float().permute(2, 0, 1)
