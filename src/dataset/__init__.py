@@ -1,6 +1,7 @@
 from .atari import Atari
 from .obj3d import Obj3D
 from .mnist import MultiScaleMNIST
+from .clevr import CLEVR
 from torch.utils.data import DataLoader
 
 
@@ -17,6 +18,8 @@ def get_dataset(cfg, mode):
         return Obj3D(cfg.dataset_roots.OBJ3D_LARGE, mode)
     elif cfg.dataset == 'MNIST':
         return MultiScaleMNIST(cfg.dataset_roots.MNIST, "train" if mode == "train" else "test")
+    elif cfg.dataset == 'CLEVR':
+        return CLEVR(cfg.dataset_roots.CLEVR, "train" if mode == "train" else "test")
 
 def get_dataloader(cfg, mode):
     assert mode in ['train', 'val', 'test']
